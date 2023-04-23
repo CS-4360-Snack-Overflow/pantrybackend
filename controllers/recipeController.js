@@ -18,7 +18,6 @@
 
 const Recipe = require('../models/recipe');
 const User = require('../models/user')
-const escapeRegExp = require('escape-string-regexp');
 const session = require('express-session');
 const fs = require("fs");
 const path = require('path');
