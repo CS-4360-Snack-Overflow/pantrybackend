@@ -124,6 +124,7 @@ router.post('/userDelete', requireAuth, async (req, res) => {
 router.post('/userLoginProc', async (req, res) => {
   try{
     req.session = await loginUser(req.body, req.session);
+    console.log(req.session)
     req.session.save((err) => {
       if(err) {
         console.log(err)
