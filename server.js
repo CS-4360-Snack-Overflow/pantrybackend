@@ -62,7 +62,6 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json())
 app.use(cors(corsOptions))
-app.options('*', cors())
 // Setting up a session store instance
 const store = MongoStore.create({
   mongoUrl: process.env.MONGO_URI,
