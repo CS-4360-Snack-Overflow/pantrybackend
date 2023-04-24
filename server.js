@@ -32,7 +32,16 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cors=require("cors");
 const corsOptions ={
-   origin:'https://pantrydev.netlify.app', 
+   origin:'*',
+   methods: [
+    'GET',
+    'POST',
+    'PATCH',
+    'DELETE'
+   ],
+   allowedHeaders: [
+    'Content-Type'
+   ],
    credentials:true,            
    optionSuccessStatus:200,
 }
