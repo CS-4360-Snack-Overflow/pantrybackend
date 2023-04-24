@@ -64,7 +64,7 @@ const store = MongoStore.create({
 app.use(session({
   secret: 'my-secret',
   resave: false,
-  httpOnly: false,
+  cookie: {  httpOnly: false },
   saveUninitialized: false,
   store: store,
 }));
