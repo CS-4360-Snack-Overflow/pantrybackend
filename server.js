@@ -65,6 +65,9 @@ app.use(session({
   secret: 'my-secret',
   resave: false,
   saveUninitialized: false,
+  cookie: {httpOnly: false, 
+          domain: ".pantrydev.netlify.app",
+          secure: true},
   store: store,
 }));
 
