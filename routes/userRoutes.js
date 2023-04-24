@@ -18,6 +18,7 @@ const requireAuth = (req, res, next) => {
 async function loginUser(credentials, session) {
   const { username, password } = credentials;
   const user = await User.findOne({ username });
+  console.log(user)
   if (!user) {
     throw new Error('Invalid credentials');
   }
@@ -31,7 +32,7 @@ async function loginUser(credentials, session) {
   session.userId = user._id;
   session.username = user.username;
   session.name = user.fullName;
-
+  console.log(session)
 }
 
 // Create a new user
