@@ -132,6 +132,7 @@ router.post('/userLoginProc', async (req, res) => {
         res.send({message: 'valid'})
       }
     })
+    res.redirect('/');
   } catch (error) {
     console.log(error)
     res.send({ message: 'invalid'})
