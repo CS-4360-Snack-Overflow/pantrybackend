@@ -126,16 +126,15 @@ router.post('/userLoginProc', async (req, res) => {
   try{
     req.session = await loginUser(req.body, req.session);
     console.log("User Login Proc, heres the session")
-    console.log(req.session)
-    req.session.save()
-    res.send({ message: 'valid'})
+    req.session.save().then(
+      res.send({ message: 'valid'})
+    )
   } catch (error) {
     res.send({ message: 'invalid'})
   }
 });
 
 router.get('/testAuth', async (req, res) => {
-  console.log(req.session)
   if (req.session.userId){
     res.json({active:true});
   }else{
