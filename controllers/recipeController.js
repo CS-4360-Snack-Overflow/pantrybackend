@@ -256,10 +256,12 @@ const recipe_get_created = (req, res) => {
 
 const recipe_get_favorited = (req, res) => {
     async function retrieveFavorites(){
-        let recipes
+        let recipes = []
         await User.findById(req.session.userId)
         .then(async (user) => {
-            recipes = await Recipe.find({ _id: { $in: user.favoriteRecipes } })
+            if(user.favoriteRecipes) {
+                recipes = await Recipe.find({ _id: { $in: user.favoriteRecipes } })
+            }
         })
         return recipes
     }
