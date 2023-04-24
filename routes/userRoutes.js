@@ -32,7 +32,7 @@ async function loginUser(credentials, session) {
   session.userId = user._id;
   session.username = user.username;
   session.name = user.fullName;
-  console.log(session)
+  return session
 }
 
 // Create a new user
@@ -54,7 +54,8 @@ router.post('/userCreate', async (req, res) => {
     });
     const savedUser = await user.save();
     //res.status(201).json(savedUser);
-    await loginUser(req.body, req.session);
+    req.session = await loginUser(req.body, req.session);
+    req.session.save()
     res.redirect('/'); 
 
   } catch (err) {
@@ -123,7 +124,8 @@ router.post('/userDelete', requireAuth, async (req, res) => {
 
 router.post('/userLoginProc', async (req, res) => {
   try{
-    await loginUser(req.body, req.session);
+    req.session = await loginUser(req.body, req.session);
+    req.session.save()
     res.send({ message: 'valid'})
   } catch (error) {
     res.send({ message: 'invalid'})
