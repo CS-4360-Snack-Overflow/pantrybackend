@@ -259,7 +259,7 @@ const recipe_get_favorited = (req, res) => {
         let recipes = []
         await User.findById(req.session.userId)
         .then(async (user) => {
-            if(user.favoriteRecipes) {
+            if(user) {
                 recipes = await Recipe.find({ _id: { $in: user.favoriteRecipes } })
             }
         })
