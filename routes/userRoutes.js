@@ -29,9 +29,9 @@ async function loginUser(credentials, session) {
     throw new Error('Invalid credentials');
   }
 
-  session.userId = user._id;
-  session.username = user.username;
-  session.name = user.fullName;
+  req.session.userId = user._id;
+  req.session.username = user.username;
+  req.session.name = user.fullName;
   console.log(session)
 }
 
