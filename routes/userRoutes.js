@@ -125,9 +125,13 @@ router.post('/userDelete', requireAuth, async (req, res) => {
 router.post('/userLoginProc', async (req, res) => {
   try{
     req.session = await loginUser(req.body, req.session);
-    req.session.save().then(
-      res.send({ message: 'valid'})
-    )
+    req.session.save((err) => {
+      if(err) {
+        console.log(err)
+      } else {
+        res.send({message: 'valid'})
+      }
+    })
   } catch (error) {
     console.log(error)
     res.send({ message: 'invalid'})
