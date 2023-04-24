@@ -30,6 +30,12 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const cors=require("cors");
+const corsOptions ={
+   origin:'*', 
+   credentials:false,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
 
 // Express app instance
 const app = express();
@@ -46,7 +52,7 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json())
-
+app.use(cors(corsOptions))
 
 // Setting up a session store instance
 const store = MongoStore.create({
