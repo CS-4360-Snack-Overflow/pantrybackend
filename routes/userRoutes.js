@@ -13,27 +13,6 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
-
-//function to login user
-async function loginUser(credentials, session) {
-  const { username, password } = credentials;
-  const user = await User.findOne({ username });
-  if (!user) {
-    throw new Error('Invalid credentials');
-  }
-
-  const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-  if (!isPasswordCorrect){
-    throw new Error('Invalid credentials');
-  }
-
-  session.userId = user._id;
-  session.username = user.username;
-  session.name = user.fullName;
-
-}
-
 // Create a new user
 // the method="POST" in the html form needs to be capital,
 // POST not post
@@ -120,17 +99,41 @@ router.post('/userDelete', requireAuth, async (req, res) => {
   }
 });
 
+//function to login user
+async function loginUser(credentials, session) {
+  const { username, password } = credentials;
+  const user = await User.findOne({ username });
+  if (!user) {
+    throw new Error('Invalid credentials');
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordCorrect){
+    throw new Error('Invalid credentials');
+  }
+
+  session.userId = user._id;
+  session.username = user.username;
+  session.name = user.fullName;
+  console.log(session)
+  return
+}
+
 router.post('/userLoginProc', async (req, res) => {
   try{
-    await loginUser(req.body, req.session);
-    res.send({ message: 'valid'})
+    console.log("HERE")
+    console.log(req.session)
+    await loginUser(req.body, req.session).then(
+      console.log(req.session)
+    );
+    res.send({ message: 'invalid', cookie: req.session.sessionId})
   } catch (error) {
     res.send({ message: 'invalid'})
   }
 });
 
 router.get('/testAuth', async (req, res) => {
-  console.log(req.session)
   if (req.session.userId){
     res.json({active:true});
   }else{

@@ -33,7 +33,7 @@ const MongoStore = require('connect-mongo');
 const cors=require("cors");
 const corsOptions ={
    origin:'https://pantrydev.netlify.app', 
-   credentials:true,            //access-control-allow-credentials:true
+   credentials:true,       //access-control-allow-credentials:true
    optionSuccessStatus:200,
 }
 
@@ -64,6 +64,10 @@ const store = MongoStore.create({
 app.use(session({
   secret: 'my-secret',
   resave: false,
+  cookie: {
+    secure: false, // sets the Secure attribute
+    sameSite: 'none', // sets the SameSite attribute
+  },
   saveUninitialized: false,
   store: store,
 }));
