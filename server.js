@@ -22,6 +22,8 @@
 
 // Importing dependencies
 require('dotenv').config();
+const https = require("https");
+const fs = require("fs");
 const express = require('express');
 const testRoutes = require('./routes/testroutes');
 const recipeRoutes = require('./routes/recipeRoutes');
@@ -35,6 +37,7 @@ const corsOptions ={
    origin:'https://pantrydev.netlify.app', 
    credentials:true,       //access-control-allow-credentials:true
    optionSuccessStatus:200,
+   methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"]
 }
 
 // Express app instance
@@ -45,7 +48,16 @@ mongoose.connect(process.env.MONGO_URI, {
 	useNewUrlParser: true, 
 	useUnifiedTopology: true
 })
-.then((result) => {app.listen(process.env.PORT)})
+.then((result) => 
+{
+  https
+  .createServer({
+    key: fs.readFileSync("localhost-key.pem"),
+    cert: fs.readFileSync("localhost.pem"),
+  },
+  app)
+  .listen(process.env.PORT, ()=> {console.log("listening")})
+})
 .catch( (err) => {console.log(err)});
 
 // Setting up middleware
@@ -65,8 +77,9 @@ app.use(session({
   secret: 'my-secret',
   resave: false,
   cookie: {
-    secure: true, // sets the Secure attribute
+    secure:  true, // sets the Secure attribute
     sameSite: 'none', // sets the SameSite attribute
+    httpOnly: true
   },
   saveUninitialized: false,
   store: store,

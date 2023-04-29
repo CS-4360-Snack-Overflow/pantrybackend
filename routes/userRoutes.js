@@ -127,7 +127,8 @@ router.post('/userLoginProc', async (req, res) => {
     await loginUser(req.body, req.session).then(
       console.log(req.session)
     );
-    res.send({ message: 'valid', cookie: req.session.sessionId})
+    console.log(req.session.sessionID)
+    res.send({ message: 'valid'})
   } catch (error) {
     res.send({ message: 'invalid'})
   }
@@ -135,6 +136,7 @@ router.post('/userLoginProc', async (req, res) => {
 
 router.get('/testAuth', async (req, res) => {
   if (req.session.userId){
+    console.log("here")
     res.json({active:true});
   }else{
     res.json({active:false});

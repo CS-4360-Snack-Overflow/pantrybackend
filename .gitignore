@@ -6,7 +6,7 @@ uploads
 .cache
 .bin
 .pnp
-
+*.pem
 /.pnp
 .pnp.js
 
