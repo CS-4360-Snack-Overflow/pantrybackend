@@ -127,7 +127,7 @@ router.post('/userLoginProc', async (req, res) => {
     await loginUser(req.body, req.session).then(
       console.log(req.session)
     );
-    res.send({ message: 'invalid', cookie: req.session.sessionId})
+    res.send({ message: 'valid', cookie: req.session.sessionId})
   } catch (error) {
     res.send({ message: 'invalid'})
   }

@@ -65,7 +65,7 @@ app.use(session({
   secret: 'my-secret',
   resave: false,
   cookie: {
-    secure: false, // sets the Secure attribute
+    secure: true, // sets the Secure attribute
     sameSite: 'none', // sets the SameSite attribute
   },
   saveUninitialized: false,
