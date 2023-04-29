@@ -67,13 +67,15 @@ app.use(session({
   resave: false,
   proxy : true,
   cookie: {
-    secure:  false, // sets the Secure attribute
+    secure:  true, // sets the Secure attribute
     sameSite: 'none', // sets the SameSite attribute
     httpOnly: true
   },
   saveUninitialized: false,
   store: store,
 }));
+
+app.set('trust proxy', 1)
 
 // Get homepage
 app.get('/', (req,res) => {
