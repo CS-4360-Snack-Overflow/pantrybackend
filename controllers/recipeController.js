@@ -248,10 +248,15 @@ const recipe_upload_image = (req, res) => {
  * This function does not have a return value, but it sends the recipe a list of recipes belonging to specific user back to the client in the response object.
  */
 const recipe_get_created = (req, res) => {
-    Recipe.find({user_num : req.session.userId})
-    .then((result) => {
-        res.send(result)
-    })
+    async function retrieveCreated(){
+        let recipes = []
+        await Recipe.find({user_num : req.session.userId})
+        .then((result) => {
+            recipes = result
+        })
+        return recipes
+    } 
+    retrieveCreated().then((results) => res.send(results))
 }
 
 const recipe_get_favorited = (req, res) => {
