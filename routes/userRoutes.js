@@ -146,12 +146,13 @@ router.get('/testAuth', async (req, res) => {
 
 // even logging out runs 'requireAuth' function, so if this route is accessed, you get sent to login page
 router.get('/logout', requireAuth, async (req, res) => {
+  console.log(req.session)
   req.session.destroy(function(err) {
     // express-session is linked to connect-mongo, so when this session.destroy() function is executed, it deletes the relevant entry from mongodb, and that signals the end of session
     if (err) {
       console.error('Error destroying session:', err);
     }
-    res.redirect('/');
+    // res.redirect('/');
   });
 });
 
