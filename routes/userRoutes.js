@@ -160,15 +160,13 @@ router.get('/logout', requireAuth, async (req, res) => {
 
 // Add a recipe ID to user's favorites
 router.post('/favorite/:id', async (req, res) => {
-  const user = await User.findOneAndUpdate({_id: req.session.userId}, {$addToSet: {favoriteRecipes: req.params.id}}, 
-                        (err) => {console.log(err)});
+  const user = await User.findOneAndUpdate({_id: req.session.userId}, {$addToSet: {favoriteRecipes: req.params.id}});
   return user.favoriteRecipes
 })
 
 // Remove a recipe ID from user's favorites
 router.delete('/unfavorite/:id', async (req, res) => {
-  const user = await User.findOneAndUpdate({_id: req.session.userId}, {$pull: {favoriteRecipes: req.params.id}}, 
-                        (err) => {console.log(err)})
+  const user = await User.findOneAndUpdate({_id: req.session.userId}, {$pull: {favoriteRecipes: req.params.id}})
   return user.favoriteRecipes
 })
 
