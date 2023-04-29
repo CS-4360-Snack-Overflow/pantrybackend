@@ -14,7 +14,25 @@ const requireAuth = (req, res, next) => {
 };
 
 
+//function to login user
+async function loginUser(credentials, session) {
+  const { username, password } = credentials;
+  const user = await User.findOne({ username });
+  if (!user) {
+    throw new Error('Invalid credentials');
+  }
 
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordCorrect){
+    throw new Error('Invalid credentials');
+  }
+
+  session.userId = user._id;
+  session.username = user.username;
+  session.name = user.fullName;
+
+}
 
 // Create a new user
 // the method="POST" in the html form needs to be capital,
@@ -35,8 +53,7 @@ router.post('/userCreate', async (req, res) => {
     });
     const savedUser = await user.save();
     //res.status(201).json(savedUser);
-    req.session = await loginUser(req.body, req.session);
-    req.session.save()
+    await loginUser(req.body, req.session);
     res.redirect('/'); 
 
   } catch (err) {
@@ -106,39 +123,11 @@ router.post('/userDelete', requireAuth, async (req, res) => {
 router.post('/userLoginProc', async (req, res) => {
   try{
     await loginUser(req.body, req.session);
-    req.session.save((err) => {
-      if(err) {
-        console.log(err)
-      } else {
-        res.send({message: 'valid'})
-      }
-    })
-    res.redirect('/');
+    res.send({ message: 'valid'})
   } catch (error) {
-    console.log(error)
     res.send({ message: 'invalid'})
   }
 });
-
-//function to login user
-async function loginUser(credentials, session) {
-  const { username, password } = credentials;
-  const user = await User.findOne({ username });
-  if (!user) {
-    throw new Error('Invalid credentials');
-  }
-
-  const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-  if (!isPasswordCorrect){
-    throw new Error('Invalid credentials');
-  }
-
-  session.userId = user._id;
-  session.username = user.username;
-  session.name = user.fullName;
-  return session
-}
 
 router.get('/testAuth', async (req, res) => {
   console.log(req.session)

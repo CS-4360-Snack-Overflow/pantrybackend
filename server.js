@@ -32,17 +32,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cors=require("cors");
 const corsOptions ={
-   origin:'https://pantrydev.netlify.app',
-   methods: [
-    'GET',
-    'POST',
-    'PATCH',
-    'DELETE'
-   ],
-   allowedHeaders: [
-    'Content-Type'
-   ],
-   credentials:true,            
+   origin:'https://pantrydev.netlify.app', 
+   credentials:true,            //access-control-allow-credentials:true
    optionSuccessStatus:200,
 }
 
@@ -62,6 +53,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json())
 app.use(cors(corsOptions))
+
 // Setting up a session store instance
 const store = MongoStore.create({
   mongoUrl: process.env.MONGO_URI,
@@ -73,10 +65,6 @@ app.use(session({
   secret: 'my-secret',
   resave: false,
   saveUninitialized: false,
-  cookie: {httpOnly: true,
-          sameSite: "none",
-          domain: ".pantrydev.netlify.app",
-          secure: true},
   store: store,
 }));
 
