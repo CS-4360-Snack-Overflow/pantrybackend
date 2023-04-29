@@ -22,8 +22,6 @@
 
 // Importing dependencies
 require('dotenv').config();
-const https = require("https");
-const fs = require("fs");
 const express = require('express');
 const testRoutes = require('./routes/testroutes');
 const recipeRoutes = require('./routes/recipeRoutes');
@@ -48,16 +46,7 @@ mongoose.connect(process.env.MONGO_URI, {
 	useNewUrlParser: true, 
 	useUnifiedTopology: true
 })
-.then((result) => 
-{
-  https
-  .createServer({
-    key: fs.readFileSync("localhost-key.pem"),
-    cert: fs.readFileSync("localhost.pem"),
-  },
-  app)
-  .listen(process.env.PORT, ()=> {console.log("listening")})
-})
+.then((result) => {app.listen(process.env.PORT)})
 .catch( (err) => {console.log(err)});
 
 // Setting up middleware
@@ -76,8 +65,9 @@ const store = MongoStore.create({
 app.use(session({
   secret: 'my-secret',
   resave: false,
+  proxy : true,
   cookie: {
-    secure:  true, // sets the Secure attribute
+    secure:  false, // sets the Secure attribute
     sameSite: 'none', // sets the SameSite attribute
     httpOnly: true
   },
