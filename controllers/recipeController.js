@@ -236,6 +236,7 @@ const recipe_upload_image = (req, res) => {
         const result = await cloudinary.uploader.upload(image_path, (error) => {console.log(error)})
                     .catch((err) => {console.log(err)});
         fs.unlink(req.file.path, ()=>{})
+        console.log(result.secure_url)
         return result.secure_url
     } catch(error) {
         console.log(error)
