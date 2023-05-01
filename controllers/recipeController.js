@@ -21,9 +21,14 @@ const User = require('../models/user')
 const session = require('express-session');
 const fs = require("fs");
 const path = require('path');
+const cloudinary = require('cloudinary')
 require('dotenv').config();
 
-
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
+});
 /**
  * Retrieves a list of recipes from the backend server.
  *
@@ -226,13 +231,12 @@ const recipe_patch = (req, res) => {
  * This function returns a JSON response containing the path of the uploaded image.
  */
 const recipe_upload_image = (req, res) => {
-    const pathString = process.env.RECIPE_IM_PATH + req.file.originalname
-    const newPath = path.join(__dirname, "../../Frontend/public/"+pathString)
-    if(fs.existsSync(newPath)) {
-        fs.unlink(newPath, ()=>{})
+    async function uploadToCloud(image_path){
+        const result = await cloudinary.uploader.upload(image_path);
+        return result.secure_url
     }
-    fs.rename(req.file.path, newPath, err => {if(err) {console.log(err)}});
-    return res.json({"path": pathString})
+    const url = uploadToCloud(req.file.path)
+    return res.json({"url": url})
 }
  
 
