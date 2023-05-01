@@ -241,8 +241,8 @@ const recipe_upload_image = (req, res) => {
         console.log(error)
     }
     }  
-
     const result = uploadToCloud(req.file.path)
+    console.log(result)
     return res.json({"url": result.secure_url})
 }
  
