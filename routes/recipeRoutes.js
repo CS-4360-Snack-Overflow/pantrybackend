@@ -3,7 +3,7 @@ const express = require('express');
 const recipeController = require('../controllers/recipeController');
 const router = express.Router();
 const multer = require('multer');
-const upload = multer({dest: "../assets/"});
+const upload = multer({dest: "../assets/recipeimages"});
 
 router.get('/', recipeController.recipe_index);
 

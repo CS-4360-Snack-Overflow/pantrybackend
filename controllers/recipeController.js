@@ -236,6 +236,7 @@ const recipe_upload_image = (req, res) => {
         return result.secure_url
     }
     const url = uploadToCloud(req.file.path)
+    fs.unlink(req.file.path)
     return res.json({"url": url})
 }
  
