@@ -242,9 +242,11 @@ const recipe_upload_image = (req, res) => {
         console.log(error)
     }
     } 
-    const url = uploadToCloud(req.file.path)
-    console.log(url)
-    return res.json({"url": url})
+    uploadToCloud(req.file.path)
+    .then((result) => {
+        console.log(result)
+        res.json({"url": result})
+    })
 }
  
 
