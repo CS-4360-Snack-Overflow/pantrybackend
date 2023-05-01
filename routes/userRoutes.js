@@ -136,7 +136,6 @@ router.post('/userLoginProc', async (req, res) => {
 
 router.get('/testAuth', async (req, res) => {
   if (req.session.userId){
-    console.log("here")
     res.json({active:true});
   }else{
     res.json({active:false});
