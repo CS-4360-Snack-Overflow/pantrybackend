@@ -231,19 +231,19 @@ const recipe_patch = (req, res) => {
  * This function returns a JSON response containing the path of the uploaded image.
  */
 const recipe_upload_image = (req, res) => {
-        async function uploadToCloud(image_path){
-        try {
-            const result = await cloudinary.uploader.upload(image_path, (error) => {console.log(error)})
-                        .catch((err) => {console.log(err)});
-            console.log("HERES THE IM URL:")
-            console.log(result)
-            return result
-        } catch(error) {
-            console.log(error)
-        }
-        }  
+    async function uploadToCloud(image_path){
+    try {
+        const result = await cloudinary.uploader.upload(image_path, (error) => {console.log(error)})
+                    .catch((err) => {console.log(err)});
+        console.log("HERES THE IM URL:")
+        console.log(result)
+        fs.unlink(req.file.path, ()=>{})
+        return result
+    } catch(error) {
+        console.log(error)
+    }
+    }  
     const url = uploadToCloud(req.file.path)
-    fs.unlink(req.file.path, ()=>{})
     return res.json({"url": url})
 }
  
