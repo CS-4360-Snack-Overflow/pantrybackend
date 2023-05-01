@@ -233,7 +233,9 @@ const recipe_patch = (req, res) => {
 const recipe_upload_image = (req, res) => {
     async function uploadToCloud(image_path){
         const result = await cloudinary.uploader.upload(image_path);
-        return result.secure_url
+        console.log("HERES THE IM URL:")
+        console.log(result)
+        return result
     }
     const url = uploadToCloud(req.file.path)
     fs.unlink(req.file.path, ()=>{})
