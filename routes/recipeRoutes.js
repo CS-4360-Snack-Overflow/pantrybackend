@@ -13,7 +13,7 @@ router.get('/created', recipeController.recipe_get_created);
 
 router.get('/favorited', recipeController.recipe_get_favorited);
 
-router.post('/upload', upload.single('image'), recipeController.recipe_upload_image);
+router.post('/upload', upload.single('files'), recipeController.recipe_upload_image);
 
 router.get('/:id', recipeController.recipe_details);
 
