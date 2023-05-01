@@ -233,10 +233,8 @@ const recipe_patch = (req, res) => {
 const recipe_upload_image = (req, res) => {
     async function uploadToCloud(image_path){
     try {
-        const result = await cloudinary.uploader.upload(image_path, (error) => {console.log(error)})
-                    .catch((err) => {console.log(err)});
+        const result = await cloudinary.uploader.upload(image_path)
         fs.unlink(req.file.path, ()=>{})
-        console.log(result.secure_url)
         return result.secure_url
     } catch(error) {
         console.log(error)
@@ -244,7 +242,6 @@ const recipe_upload_image = (req, res) => {
     } 
     uploadToCloud(req.file.path)
     .then((result) => {
-        console.log(result)
         res.json({"url": result})
     })
 }
