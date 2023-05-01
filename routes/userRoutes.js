@@ -33,7 +33,7 @@ router.post('/userCreate', async (req, res) => {
     const savedUser = await user.save();
     //res.status(201).json(savedUser);
     await loginUser(req.body, req.session);
-    res.send('<script>window.top.location.href = "/";</script>')
+    res.status(200).send({"success"})
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
