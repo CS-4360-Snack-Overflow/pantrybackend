@@ -18,6 +18,7 @@ const requireAuth = (req, res, next) => {
 // POST not post
 router.post('/userCreate', async (req, res) => {
   try {
+    console.log(req.body)
     const user = new User({
       fullName: req.body.fullName,
       emailAddress: req.body.emailAddress,
