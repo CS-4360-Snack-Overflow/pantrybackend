@@ -171,7 +171,7 @@ router.delete('/unfavorite/:id', async (req, res) => {
 router.get('/isfavorite/:id', async (req, res) => {
   // Checks if recipe id is in favorites array
   const user = await User.findById(req.session.userId);
-  if(user.favoriteRecipes) {
+  if(user.favoriteRecipes != null) {
     if(user.favoriteRecipes.includes(req.params.id)) {
       res.json({result: true})
     }
