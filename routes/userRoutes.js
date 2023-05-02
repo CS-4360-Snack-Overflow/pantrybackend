@@ -18,7 +18,6 @@ const requireAuth = (req, res, next) => {
 // POST not post
 router.post('/userCreate', async (req, res) => {
   try {
-    console.log(req.body)
     const user = new User({
       fullName: req.body.fullName,
       emailAddress: req.body.emailAddress,
@@ -32,9 +31,8 @@ router.post('/userCreate', async (req, res) => {
       countryRegion: req.body.countryRegion
     });
     const savedUser = await user.save();
-    //res.status(201).json(savedUser);
     await loginUser(req.body, req.session);
-    res.json({message:"success"})
+    res.redirect(process.env.REACT_APP_URL)
   } catch (err) {
     res.json({ message: err.message });
   }
@@ -151,6 +149,7 @@ router.get('/logout', requireAuth, async (req, res) => {
     if (err) {
       console.error('Error destroying session:', err);
     }
+    // res.redirect('/');
   });
 });
 
