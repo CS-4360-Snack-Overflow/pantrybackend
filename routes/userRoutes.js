@@ -33,9 +33,9 @@ router.post('/userCreate', async (req, res) => {
     const savedUser = await user.save();
     //res.status(201).json(savedUser);
     await loginUser(req.body, req.session);
-    res.status(200).json({message:"success"})
+    res.json({message:"success"})
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 });
 //TODO: this route is accessed from the signup.html. after user is created, automatically log him in, then direct them to their user profile page.
