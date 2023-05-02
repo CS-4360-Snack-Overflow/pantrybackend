@@ -72,7 +72,7 @@ router.post('/userUpdate', async (req, res) => {
 
     // if update was successful, there's that
     if (updatedUser) {
-      res.status(200); 
+      res.redirect(process.env.REACT_APP_URL + "user")
     } else {
       res.status(404).json( { message: 'User not found' });
     }
