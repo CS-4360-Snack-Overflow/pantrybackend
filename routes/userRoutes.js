@@ -192,8 +192,7 @@ router.get('/isfavorite/:id', async (req, res) => {
     const user = await User.findById(req.session.userId);
     if(user == null) {
       res.send({result: false})
-    }
-    if(user.favoriteRecipes != null) {
+    } else if(user.favoriteRecipes != null) {
       if(user.favoriteRecipes.includes(req.params.id)) {
         res.json({result: true})
       }
