@@ -145,7 +145,7 @@ router.get('/testAuth', async (req, res) => {
 });
 
 // Return user-id OR return -1 if not signed in
-app.get('/user-id', (req, res) => {
+router.get('/user-id', (req, res) => {
   if(req.session.userId == null) {
     res.json({ userId: -1 });
   } else {
