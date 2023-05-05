@@ -100,21 +100,25 @@ router.post('/userDelete', requireAuth, async (req, res) => {
 //function to login user
 async function loginUser(credentials, session) {
   const { username, password } = credentials;
-  const user = await User.findOne({ username });
-  if (!user) {
-    throw new Error('Invalid credentials');
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      throw new Error('Invalid credentials');
+    }
+  
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+  
+    if (!isPasswordCorrect){
+      throw new Error('Invalid credentials');
+    }
+  
+    session.userId = user._id;
+    session.username = user.username;
+    session.name = user.fullName;
   }
-
-  const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-  if (!isPasswordCorrect){
-    throw new Error('Invalid credentials');
+  catch(error) {
+    console.log(error)
   }
-
-  session.userId = user._id;
-  session.username = user.username;
-  session.name = user.fullName;
-  console.log(session)
   return
 }
 
@@ -143,40 +147,51 @@ router.get('/testAuth', async (req, res) => {
 
 // even logging out runs 'requireAuth' function, so if this route is accessed, you get sent to login page
 router.get('/logout', requireAuth, async (req, res) => {
-  console.log(req.session)
   req.session.destroy(function(err) {
     // express-session is linked to connect-mongo, so when this session.destroy() function is executed, it deletes the relevant entry from mongodb, and that signals the end of session
     if (err) {
       console.error('Error destroying session:', err);
     }
-    res.redirect(process.env.REACT_APP_URL)
   });
+  res.redirect(process.env.REACT_APP_URL)
 });
-
-//router.post('/recipe_create', recipeController.recipe_create_post);
 
 // Add a recipe ID to user's favorites
 router.post('/favorite/:id', async (req, res) => {
-  const user = await User.findOneAndUpdate({_id: req.session.userId}, {$addToSet: {favoriteRecipes: req.params.id}});
-  res.send(user.favoriteRecipes)
+  try {
+    const user = await User.findOneAndUpdate({_id: req.session.userId}, {$addToSet: {favoriteRecipes: req.params.id}});
+    res.send(user.favoriteRecipes)
+  } catch(err) {
+    console.log(err)
+    res.send([])
+  }
 })
 
 // Remove a recipe ID from user's favorites
 router.delete('/unfavorite/:id', async (req, res) => {
-  const user = await User.findOneAndUpdate({_id: req.session.userId}, {$pull: {favoriteRecipes: req.params.id}})
-  res.send(user.favoriteRecipes)
+  try {
+    const user = await User.findOneAndUpdate({_id: req.session.userId}, {$pull: {favoriteRecipes: req.params.id}})
+    res.send(user.favoriteRecipes)
+  } catch(error) {
+    console.log(error)
+    res.send([])
+  }
 })
 
 router.get('/isfavorite/:id', async (req, res) => {
   // Checks if recipe id is in favorites array
-  const user = await User.findById(req.session.userId);
-  if(user.favoriteRecipes != null) {
-    if(user.favoriteRecipes.includes(req.params.id)) {
-      res.json({result: true})
+  try {
+    const user = await User.findById(req.session.userId);
+    if(user.favoriteRecipes != null) {
+      if(user.favoriteRecipes.includes(req.params.id)) {
+        res.json({result: true})
+      }
     }
-  }
-  else {
-    res.send({result: false})
+    else {
+      res.send({result: false})
+    }
+  } catch(error) {
+    console.log(error)
   }
 });
 
