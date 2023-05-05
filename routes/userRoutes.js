@@ -144,6 +144,14 @@ router.get('/testAuth', async (req, res) => {
   }
 });
 
+// Return user-id OR return -1 if not signed in
+app.get('/user-id', (req, res) => {
+  if(req.session.userId == null) {
+    res.json({ userId: -1 });
+  } else {
+    res.json({ userId: req.session.userId });
+  }
+});
 
 // even logging out runs 'requireAuth' function, so if this route is accessed, you get sent to login page
 router.get('/logout', requireAuth, async (req, res) => {
@@ -182,6 +190,9 @@ router.get('/isfavorite/:id', async (req, res) => {
   // Checks if recipe id is in favorites array
   try {
     const user = await User.findById(req.session.userId);
+    if(user == null) {
+      res.send({result: false})
+    }
     if(user.favoriteRecipes != null) {
       if(user.favoriteRecipes.includes(req.params.id)) {
         res.json({result: true})

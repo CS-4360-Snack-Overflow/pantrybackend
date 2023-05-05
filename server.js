@@ -90,11 +90,6 @@ app.get('/login', (req, res) => {
   }
 });
 
-// this route isn't inside userRoutes.js because login.html is in root folder
-app.get('/user-id', (req, res) => {
-  res.json({ userId: req.session.userId });
-});
-
 app.get('/signup', (req, res) => {
   res.sendFile('./signup.html', { root: __dirname } );
   });

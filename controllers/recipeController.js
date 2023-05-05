@@ -154,7 +154,7 @@ const recipe_create_post = (req, res) => {
         instructions: req.body.instructions,
         user_num: req.session.userId
     })
-    console.log(req.session.userId)
+
     recipe.save()
     .then((result) => {
         res.redirect('/');
